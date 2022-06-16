@@ -18,8 +18,9 @@ answers.append(answer_c)
 answers.append(answer_d)
 
 for right in answers:
+    print(right)
     if data["right_answer"].all() == right.all():
-        print(right)
+        pass
 
 
 
