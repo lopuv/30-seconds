@@ -25,20 +25,18 @@ class UI(Tk):
                           width=15, height=2, command=lambda *args: self.clear(1))
         self.mainscreen()
 
-    def lable(self, tekst):
-        self.lab = Label(self, text=self.tekst)
+    def lable(self, tekst, fg_color, bg_color, y, x):
+        label = Label(self, text=tekst)
+        label.place(y=y, x=x)
+        label.configure(foreground=fg_color, background=bg_color,
+                        font=(self.SETUP["style"], 30))
 
     def mainscreen(self):
-        global lab
         self.title("30seconds")
         self.geometry("500x500")
         self.configure(bg=self.SETUP["pewter_blue"])
-        self.lable(self.tekst)
-        self.lab.place(y=200, x=200)
-        # font(lettertype, groote)
-        # alter font size of the button
-        self.lab.configure(foreground=self.SETUP["isabelline"], background=self.SETUP["pewter_blue"],
-                             font=(self.SETUP["style"], 30))
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["pewter_blue"], y=200, x=200)
         self.btn.place(y=250, x=250)
         self.mainloop()
 
@@ -54,19 +52,26 @@ class UI(Tk):
         elif number == 4:
             self.wrong_answer()
 
+    def check_answer(self, answer):
+        for a in answer:
+            if
+
     def answers(self):
         # look first for right position to create the buttons
         answer = ["antwoord A", "antwoord B", "antwoord C", "antwoord D"]
+        a = 4
+        b = 0
         y = 230
         x = 230
-        for a in answer:
-            self.btn = Button(self, text=a, bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
-                              width=15, height=2, command=lambda *args: self.clear(3))  # adjust this number
+        while a != 0:
+            self.btn = Button(self, text=answer[b], bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
+                              width=15, height=2, command=lambda *args: self.check_answer(answer))  # adjust this number
             self.btn.place(y=y, x=x)
             y = 300
             x = 300
+            a -= 1
+            b += 1
             if x >= 400:
-
                 print(y, x)
                 y += -20
                 x += -20
@@ -79,15 +84,11 @@ class UI(Tk):
     def right_answer(self):
         self.configure(bg=self.SETUP["green"])
         self.tekst = "Gefeliciteerd de vraag is goed"
-        self.lable(self.tekst)
-        self.lab.place(y=200, x=200)
-        self.lab.configure(foreground=self.SETUP["isabelline"], background=self.SETUP["green"],
-                           font=(self.SETUP["style"], 30))
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["green"], y=200, x=200)
 
     def wrong_answer(self):
         self.configure(bg=self.SETUP["red"])
         self.tekst = "Helaas de vraag is fout volgende keer beter"
-        self.lable(self.tekst)
-        self.lab.place(y=200, x=200)
-        self.lab.configure(foreground=self.SETUP["isabelline"], background=self.SETUP["red"],
-                           font=(self.SETUP["style"], 30))
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["red"], y=200, x=200)

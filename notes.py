@@ -19,16 +19,7 @@ answers.append(answer_d)
 
 for right in answers:
     if data["right_answer"].all() == right.all():
-        break
+        print(right)
 
-# look first for right position to create the buttons
-        answer = ["antwoord A", "antwoord B", "antwoord C", "antwoord D"]
-        y = 230
-        x = 230
-        for a in answer:
-            self.btn = Button(self, text=a, bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
-                              width=15, height=2)  # command here
-            self.btn.place(y=y, x=x)
-            y += 100
-            x += 100
+
 
