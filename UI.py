@@ -59,7 +59,8 @@ class UI(Tk):
     def check_answer(self, answer):
         for a in answer:
             if self.data["right_answer"].all() == a.all():
-                print(self.data["right_answer"])
+                print("hello")
+                break
 
     def answers(self):
         # look first for right position to create the buttons
@@ -76,23 +77,21 @@ class UI(Tk):
         self.answer.append(answer_c)
         self.answer.append(answer_d)
 
-        a = 4
         b = 0
         y = 230
-        x = 230
-        while a != 0:
+        x = 150
+        for _ in a:
             self.btn = Button(self, text=self.answer[b], bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
-                              width=15, height=2, command=lambda *args: self.check_answer(self.answer[b]))  # adjust this number
+                              width=15, height=2, command=lambda *args: self.check_answer(self.answer))  # adjust this number
             self.btn.place(y=y, x=x)
-            y = 300
-            x = 300
-            a -= 1
             b += 1
-            print(b)
-            if x >= 400:
-                print(y, x)
-                y += -20
-                x += -20
+            x -= 150
+            print(x)
+            if b == 4:
+                b = 0
+            if x >= -150:
+                x += 300
+                y += -50
         # check if the answer clicked is equal to the thing that is in the csv file
         # activate the timer
         # have a var that
