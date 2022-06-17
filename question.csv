@@ -1,11 +1,11 @@
 id,question,answer_a,answer_b,answer_c,answer_d,right_answer
-1,hoe maak je een variable in php?, a = 0, f a = 0, $a = 0, $ a = 0 ,answer_c
-2,wanneer gebruik je dit: "",bij een boolean,bij een int,bij een string,bij een float,answer_c
-3,zijn if functions belangrijk?,ja,nee,mischien,geen idee,answer_a
-4,kan je met html een database connecten,ja,nee,mischien,geen idee,answer_b
-5,is css een kut taal?,ja,ja,ja,ja,answer_a answer_b answer_c answer_d
-6,is djeno aggresief?,ja,nee,wie is djeno?,geen idee,answer_a
-7,is in dit schooljaar drama geweest,ja en veel,nee,weinig,geen idee,answer_c
-8,hoe noemen wij meneer siebert,stinky,finky,finley,stinky finky,answer_d
-9,hoeveel hebben wij gecodeert in de eerste week,niks,iets,veel,de hele opdracht,answer_a
-10,hoe checken wij aanwezigheid,ms teams,eduarte,bender,visual studio code,answer_c
+1,hoe maak je een variable in php?, a = 0, f a = 0, $a = 0, $ a = 0 ,3
+2,wanneer gebruik je dit: "",bij een boolean,bij een int,bij een string,bij een float,3
+3,zijn if functions belangrijk?,ja,nee,mischien,geen idee,1
+4,kan je met html een database connecten,ja,nee,mischien,geen idee,2
+5,is css een kut taal?,ja,ja,ja,ja,1
+6,is djeno aggresief?,ja,nee,wie is djeno?,geen idee,1
+7,is in dit schooljaar drama geweest,ja en veel,nee,weinig,geen idee,3
+8,hoe noemen wij meneer siebert,stinky,finky,finley,stinky finky,4
+9,hoeveel hebben wij gecodeert in de eerste week,niks,iets,veel,de hele opdracht,1
+10,hoe checken wij aanwezigheid,ms teams,eduarte,bender,visual studio code,3
