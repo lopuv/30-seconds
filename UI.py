@@ -21,6 +21,7 @@ class UI(Tk):
             # font style
             "style": "Noto Sans TC"
         }
+        self.opt_sel = IntVar()
         self.tekst = "hello"
         self.btn = Button(self, text="Start", bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
                           width=15, height=2, command=lambda *args: self.clear(1))
@@ -80,18 +81,21 @@ class UI(Tk):
         b = 0
         y = 230
         x = 150
+        q_list = []
         for _ in a:
-            self.btn = Button(self, text=self.answer[b], bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
-                              width=15, height=2, command=lambda *args: self.check_answer(self.answer))  # adjust this number
-            self.btn.place(y=y, x=x)
+            btn = Radiobutton(self, text=self.answer[b], bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
+                              width=15, height=2, variable=self.opt_sel, value=len(q_list) + 1)  # adjust this number
+            btn.place(y=y, x=x)
+            q_list.append(btn)
             b += 1
             x -= 150
             print(x)
             if b == 4:
                 b = 0
-            if x >= -150:
-                x += 300
-                y += -50
+            if x == -150:
+                x = 150
+                y -= 200
+        return q_list
         # check if the answer clicked is equal to the thing that is in the csv file
         # activate the timer
         # have a var that
