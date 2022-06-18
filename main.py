@@ -1,4 +1,4 @@
 
-import UI
+import Quiz
 
-UI.UI()
+Quiz.Quiz()

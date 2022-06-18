@@ -4,7 +4,7 @@ import pandas
 import time
 
 
-class UI(Tk):
+class Quiz(Tk):
 
     def __init__(self):
         super().__init__()
@@ -23,6 +23,7 @@ class UI(Tk):
             "style": "Noto Sans TC"
         }
         self.opt_sel = IntVar()
+        self.count = 100
         self.tekst = "hello"
         self.btn = Button(self, text="Start", bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
                           width=15, height=2, command=lambda *args: self.clear(1))
@@ -59,6 +60,8 @@ class UI(Tk):
             self.right_answer()
         elif number == 4:
             self.wrong_answer()
+        elif number == 5:
+            self.end()
 
     def check_answer(self):
         d = self.data["right_answer"][self.a2]
@@ -71,14 +74,8 @@ class UI(Tk):
             self.score -= 10
             self.clear(4)
 
-        # if print(int(d) == opt):
-        #     self.score += 10
-        #     self.clear(3)  # right answer
-        # else:
-        #     self.score -= 10
-        #     self.clear(4)  # wrong answer
-
     def answers(self):
+        self.start_timer(self.count)
         options = ["answer_a", "answer_b", "answer_c", "answer_d"]
         self.configure(bg=self.SETUP["pewter_blue"])
 
@@ -89,19 +86,20 @@ class UI(Tk):
         y = 230
         x = 150
         q_list = []
-        t = 0
+        #set validation that if all the questions have been answerd that it goed to the end
+
+        self.tekst = self.data["question"][self.a2]
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
+                   y=200, x=200)
         for _ in options:
             btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
                               fg=self.SETUP["isabelline"], width=15, height=2, variable=self.opt_sel,
-                              value= len(q_list)+1, indicatoron=False, command=self.check_answer)  # adjust this number
+                              value=len(q_list) + 1, indicatoron=False, command=self.check_answer)  # adjust this number
             btn.deselect()
             btn.place(y=y, x=x)
             self.a += 1
-            t += 1
             q_list.append(btn)
             x -= 150
-            if t == 4:
-                t = 0
             if x == -150:
                 x = 150
                 y -= 200
@@ -114,7 +112,7 @@ class UI(Tk):
 
     def ref(self):
         self.update()
-        time.sleep(5)
+        time.sleep(1)
         self.a2 += 1
         self.clear(1)
 
@@ -126,8 +124,6 @@ class UI(Tk):
         self.tekst = f"je huidige score is {self.score}"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["green"], y=100, x=100)
-        # call to a timer method so it can go to the next question self.a needs a random function so the rest of the
-        # answer function will work and conintue the quiz
         self.ref()
 
     def wrong_answer(self):
@@ -139,3 +135,29 @@ class UI(Tk):
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["red"], y=100, x=100)
         self.ref()
+
+    def start_timer(self, remaining=None):
+        if remaining is not None:
+            self.count = remaining
+
+        if self.count <= 0:
+            self.clear(5)
+        else:
+            if self.count < 10:
+                self.tekst = f"0:0{self.count}"
+            else:
+                self.tekst = f"0:{self.count}"
+            self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                       bg_color=self.SETUP["pewter_blue"], y=100, x=100)
+            self.count = self.count - 1
+            self.after(1000, self.start_timer)
+
+    def end(self):
+        self.configure(bg=self.SETUP["pewter_blue"])
+        self.tekst = "Tijd is op de quiz voorbij"
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["pewter_blue"], y=100, x=100)
+        self.tekst = f"Je score is {self.score}"
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["pewter_blue"], y=150, x=150)
+
