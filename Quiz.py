@@ -38,7 +38,7 @@ class Quiz(Tk):
         label = Label(self, text=tekst)
         label.place(y=y, x=x)
         label.configure(foreground=fg_color, background=bg_color,
-                        font=(self.SETUP["style"], 30))
+                        font=(self.SETUP["style"], 20))
 
     def mainscreen(self):
         self.title("30seconds")
@@ -83,14 +83,14 @@ class Quiz(Tk):
             answer = self.data[options[a]]
             self.answer.append(answer)
 
-        y = 230
-        x = 150
+        y = 430
+        x = 320
         q_list = []
         # set validation that if all the questions have been answerd that it goed to the end
 
         self.tekst = self.data["question"][self.a2]
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
-                   y=200, x=200)
+                   y=50, x=10)
         for _ in options:
             btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
                               fg=self.SETUP["isabelline"], width=15, height=2, variable=self.opt_sel,
@@ -99,9 +99,9 @@ class Quiz(Tk):
             btn.place(y=y, x=x)
             self.a += 1
             q_list.append(btn)
-            x -= 150
-            if x == -150:
-                x = 150
+            x -= 320
+            if x == -320:
+                x = 320
                 y -= 200
         return q_list
         # check if the answer clicked is equal to the thing that is in the csv file
@@ -131,20 +131,20 @@ class Quiz(Tk):
         self.configure(bg=self.SETUP["green"])
         self.tekst = "Gefeliciteerd de vraag is goed"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
-                   bg_color=self.SETUP["green"], y=200, x=200)
+                   bg_color=self.SETUP["green"], y=100, x=100)
         self.tekst = f"je huidige score is {self.score}"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
-                   bg_color=self.SETUP["green"], y=100, x=100)
+                   bg_color=self.SETUP["green"], y=30, x=100)
         self.ref()
 
     def wrong_answer(self):
         self.configure(bg=self.SETUP["red"])
-        self.tekst = "Helaas de vraag is fout volgende keer beter"
-        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
-                   bg_color=self.SETUP["red"], y=200, x=200)
-        self.tekst = f"je huidige score is {self.score}"
+        self.tekst = "Helaas de vraag is fout "
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["red"], y=100, x=100)
+        self.tekst = f"je huidige score is {self.score}"
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["red"], y=30, x=100)
         self.ref()
 
     def start_timer(self, remaining=None):
@@ -159,7 +159,7 @@ class Quiz(Tk):
             else:
                 self.tekst = f"0:{self.count}"
             self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
-                       bg_color=self.SETUP["pewter_blue"], y=100, x=100)
+                       bg_color=self.SETUP["pewter_blue"], y=0, x=0)
             self.count = self.count - 1
             self.after(1000, self.start_timer)
 
