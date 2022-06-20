@@ -33,6 +33,7 @@ class Quiz(Tk):
         self.a2 = 0
         self.answer = []
         self.score = 0
+        self.num = 0
         self.data = pandas.read_csv("question.csv")
         with open("data.txt") as data:
             self.high_score = int(data.read())
@@ -77,6 +78,9 @@ class Quiz(Tk):
         if int(d) == opt:
             self.score += 10
             self.clear(3)
+        elif self.a2 == 4:
+            self.score += 10
+            self.clear(3)
         else:
             self.score -= 10
             self.clear(4)
@@ -92,7 +96,7 @@ class Quiz(Tk):
             self.answer.append(answer)
 
         y = 400
-        x = 280
+        x = 260
         q_list = []
         # set validation that if all the questions have been answerd that it goed to the end
 
@@ -101,16 +105,16 @@ class Quiz(Tk):
                    y=50, x=10)
         for _ in options:
             btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
-                              fg=self.SETUP["isabelline"], width=12, height=2, variable=self.opt_sel,
+                              fg=self.SETUP["isabelline"], width=13, height=2, variable=self.opt_sel,
                               value=len(q_list) + 1, indicatoron=False, command=self.check_answer,
                               font=(self.SETUP["style"], 20, 'bold'))  # adjust this number
             btn.deselect()
             btn.place(y=y, x=x)
             self.a += 1
             q_list.append(btn)
-            x -= 280
-            if x == -280:
-                x = 280
+            x -= 260
+            if x == -260:
+                x = 260
                 y -= 100
         return q_list
         # check if the answer clicked is equal to the thing that is in the csv file
@@ -124,7 +128,8 @@ class Quiz(Tk):
         time.sleep(3)
 
         if self.a2 == 9:
-            self.clear(5)
+            self.num += 1
+            self.count = 0
         else:
             self.run_timer = False
             self.a2 += 1
@@ -157,8 +162,11 @@ class Quiz(Tk):
         if remaining is not None:
             self.count = remaining
 
-        if self.count <= 0:
-            self.clear(5)
+        if self.count == 0:
+            self.num += 1
+            if self.num == 2:
+                self.clear(5)
+                self.num = 3
         else:
             if self.count < 10:
                 self.tekst = f"0:0{self.count}"
@@ -171,7 +179,6 @@ class Quiz(Tk):
             self.after(1000, self.start_timer)
 
     def end(self):
-        self.count = 0
         self.configure(bg=self.SETUP["pewter_blue"])
         self.tekst = "Tijd is op de quiz voorbij"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
