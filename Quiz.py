@@ -28,7 +28,7 @@ class Quiz(Tk):
         self.btn = Button(self, text="Start", bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
                           width=15, height=2, command=lambda *args: self.clear(1))
         self.a = 0
-        self.a2 = 0
+        self.a2 = 8
         self.answer = []
         self.score = 0
         self.data = pandas.read_csv("question.csv")
@@ -86,7 +86,7 @@ class Quiz(Tk):
         y = 230
         x = 150
         q_list = []
-        #set validation that if all the questions have been answerd that it goed to the end
+        # set validation that if all the questions have been answerd that it goed to the end
 
         self.tekst = self.data["question"][self.a2]
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
@@ -113,8 +113,19 @@ class Quiz(Tk):
     def ref(self):
         self.update()
         time.sleep(1)
-        self.a2 += 1
-        self.clear(1)
+        print(self.a2)
+        print(type(9))
+
+        if self.a2 == 9:
+            self.clear(5)
+            print("function 1")
+        else:
+            self.clear(1)
+            self.a2 += 1
+            print("function 2")
+
+        print(self.a2)
+
 
     def right_answer(self):
         self.configure(bg=self.SETUP["green"])
