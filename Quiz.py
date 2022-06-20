@@ -22,16 +22,20 @@ class Quiz(Tk):
             # font style
             "style": "Noto Sans TC"
         }
+        self.run_timer = True
         self.opt_sel = IntVar()
-        self.count = 100
-        self.tekst = "hello"
+        self.count = 30
+        self.tekst = "Welkom bij 30 seconds"
         self.btn = Button(self, text="Start", bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
-                          width=15, height=2, command=lambda *args: self.clear(1))
+                          width=12, height=2, command=lambda *args: self.clear(1),
+                          font=(self.SETUP["style"], 20, 'bold'))
         self.a = 0
-        self.a2 = 8
+        self.a2 = 0
         self.answer = []
         self.score = 0
         self.data = pandas.read_csv("question.csv")
+        with open("data.txt") as data:
+            self.high_score = int(data.read())
         self.mainscreen()
 
     def lable(self, tekst, fg_color, bg_color, y, x):
@@ -45,8 +49,11 @@ class Quiz(Tk):
         self.geometry("500x500")
         self.configure(bg=self.SETUP["pewter_blue"])
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
-                   bg_color=self.SETUP["pewter_blue"], y=200, x=200)
-        self.btn.place(y=250, x=250)
+                   bg_color=self.SETUP["pewter_blue"], y=180, x=115)
+        self.tekst = f"De hoogste score is: {self.high_score}"
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["pewter_blue"], y=300, x=125)
+        self.btn.place(y=200, x=150)
         self.mainloop()
 
     def clear(self, number):
@@ -75,7 +82,8 @@ class Quiz(Tk):
             self.clear(4)
 
     def answers(self):
-        self.start_timer(self.count)
+        if self.run_timer:
+            self.start_timer()
         options = ["answer_a", "answer_b", "answer_c", "answer_d"]
         self.configure(bg=self.SETUP["pewter_blue"])
 
@@ -83,8 +91,8 @@ class Quiz(Tk):
             answer = self.data[options[a]]
             self.answer.append(answer)
 
-        y = 430
-        x = 320
+        y = 400
+        x = 280
         q_list = []
         # set validation that if all the questions have been answerd that it goed to the end
 
@@ -93,16 +101,17 @@ class Quiz(Tk):
                    y=50, x=10)
         for _ in options:
             btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
-                              fg=self.SETUP["isabelline"], width=15, height=2, variable=self.opt_sel,
-                              value=len(q_list) + 1, indicatoron=False, command=self.check_answer)  # adjust this number
+                              fg=self.SETUP["isabelline"], width=12, height=2, variable=self.opt_sel,
+                              value=len(q_list) + 1, indicatoron=False, command=self.check_answer,
+                              font=(self.SETUP["style"], 20, 'bold'))  # adjust this number
             btn.deselect()
             btn.place(y=y, x=x)
             self.a += 1
             q_list.append(btn)
-            x -= 320
-            if x == -320:
-                x = 320
-                y -= 200
+            x -= 280
+            if x == -280:
+                x = 280
+                y -= 100
         return q_list
         # check if the answer clicked is equal to the thing that is in the csv file
         # activate the timer
@@ -110,22 +119,19 @@ class Quiz(Tk):
 
         # do a self.clear(3) to trigger the right_answer function
 
-    def ref(self):
+    def ref(self, num):
         self.update()
-        time.sleep(1)
-        print(self.a2)
-        print(type(9))
+        time.sleep(3)
 
         if self.a2 == 9:
             self.clear(5)
-            print("function 1")
         else:
-            self.clear(1)
+            self.run_timer = False
             self.a2 += 1
-            print("function 2")
+            self.clear(1)
 
-        print(self.a2)
-
+        if num == 1:
+            self.destroy()
 
     def right_answer(self):
         self.configure(bg=self.SETUP["green"])
@@ -135,7 +141,7 @@ class Quiz(Tk):
         self.tekst = f"je huidige score is {self.score}"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["green"], y=30, x=100)
-        self.ref()
+        self.ref(2)
 
     def wrong_answer(self):
         self.configure(bg=self.SETUP["red"])
@@ -145,7 +151,7 @@ class Quiz(Tk):
         self.tekst = f"je huidige score is {self.score}"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["red"], y=30, x=100)
-        self.ref()
+        self.ref(2)
 
     def start_timer(self, remaining=None):
         if remaining is not None:
@@ -158,12 +164,14 @@ class Quiz(Tk):
                 self.tekst = f"0:0{self.count}"
             else:
                 self.tekst = f"0:{self.count}"
+
             self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                        bg_color=self.SETUP["pewter_blue"], y=0, x=0)
-            self.count = self.count - 1
+            self.count -= 1
             self.after(1000, self.start_timer)
 
     def end(self):
+        self.count = 0
         self.configure(bg=self.SETUP["pewter_blue"])
         self.tekst = "Tijd is op de quiz voorbij"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
@@ -171,4 +179,12 @@ class Quiz(Tk):
         self.tekst = f"Je score is {self.score}"
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["pewter_blue"], y=150, x=150)
+        if self.score > self.high_score:
+            self.high_score = self.score
+            with open("data.txt", mode="w") as data:
+                data.write(f"{self.score}")
+        self.tekst = f"De high score is {self.high_score}"
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
+                   bg_color=self.SETUP["pewter_blue"], y=200, x=150)
+        self.ref(1)
 
