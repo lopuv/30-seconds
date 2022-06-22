@@ -81,6 +81,9 @@ class Quiz(Tk):
         elif self.a2 == 4:
             self.score += 10
             self.clear(3)
+        elif self.a2 == 5:
+            self.score += 10
+            self.clear(3)
         else:
             self.score -= 10
             self.clear(4)
@@ -124,8 +127,9 @@ class Quiz(Tk):
         # do a self.clear(3) to trigger the right_answer function
 
     def ref(self, num):
-        self.update()
-        time.sleep(3)
+        if num != 3:
+            self.update()
+            time.sleep(3)
 
         if self.a2 == 9:
             self.num += 1
@@ -134,6 +138,10 @@ class Quiz(Tk):
             self.run_timer = False
             self.a2 += 1
             self.clear(1)
+
+        if self.num == 2:
+            self.clear(5)
+            self.num = 3
 
         if num == 1:
             self.destroy()
@@ -164,9 +172,8 @@ class Quiz(Tk):
 
         if self.count == 0:
             self.num += 1
-            if self.num == 2:
-                self.clear(5)
-                self.num = 3
+            self.a2 = 9
+            self.ref(3)
         else:
             if self.count < 10:
                 self.tekst = f"0:0{self.count}"
