@@ -24,13 +24,13 @@ class Quiz(Tk):
         }
         self.run_timer = True
         self.opt_sel = IntVar()
-        self.count = 30
+        self.count = 10
         self.tekst = "Welkom bij 30 seconds"
         self.btn = Button(self, text="Start", bg=self.SETUP["blue_sapphire"], fg=self.SETUP["isabelline"],
                           width=12, height=2, command=lambda *args: self.clear(1),
                           font=(self.SETUP["style"], 20, 'bold'))
         self.a = 0
-        self.a2 = 0
+        self.a2 = 8
         self.answer = []
         self.score = 0
         self.num = 0
@@ -91,6 +91,7 @@ class Quiz(Tk):
     def answers(self):
         if self.run_timer:
             self.start_timer()
+
         options = ["answer_a", "answer_b", "answer_c", "answer_d"]
         self.configure(bg=self.SETUP["pewter_blue"])
 
@@ -102,49 +103,46 @@ class Quiz(Tk):
         x = 260
         q_list = []
         # set validation that if all the questions have been answerd that it goed to the end
-        if self.a2 < 10:
-            self.tekst = f"vraag {self.a2 + 1}/ 10"
-            self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
-                       y=0, x=100)
-            self.tekst = self.data["question"][self.a2]
-            self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
-                       y=50, x=10)
-            for _ in options:
-                btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
-                                  fg=self.SETUP["isabelline"], width=13, height=2, variable=self.opt_sel,
-                                  value=len(q_list) + 1, indicatoron=False, command=self.check_answer,
-                                  font=(self.SETUP["style"], 20, 'bold'))  # adjust this number
-                btn.deselect()
-                btn.place(y=y, x=x)
-                self.a += 1
-                q_list.append(btn)
-                x -= 260
-                if x == -260:
-                    x = 260
-                    y -= 100
-            return q_list
-        else:
-            self.clear(5)
-            return
+        self.tekst = f"vraag {self.a2 + 1}/ 10"
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
+                   y=0, x=100)
+        self.tekst = self.data["question"][self.a2]
+        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
+                   y=50, x=10)
+        for _ in options:
+            btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
+                              fg=self.SETUP["isabelline"], width=13, height=2, variable=self.opt_sel,
+                              value=len(q_list) + 1, indicatoron=False, command=self.check_answer,
+                              font=(self.SETUP["style"], 20, 'bold'))  # adjust this number
+            btn.deselect()
+            btn.place(y=y, x=x)
+            self.a += 1
+            q_list.append(btn)
+            x -= 260
+            if x == -260:
+                x = 260
+                y -= 100
+        return q_list
 
     def ref(self, num):
         if num != 3:
             self.update()
             time.sleep(2)
 
-        if num == 1:
-            self.destroy()
-        # if self.a2 == 9:
-        #     self.num += 1
-        #     self.count = 0
-        # else:
-        self.run_timer = False
-        self.a2 += 1
-        self.clear(1)
+        if self.a2 == 9:
+            self.num += 1
+            self.count = 0
+        else:
+            self.run_timer = False
+            self.a2 += 1
+            self.clear(1)
 
         if self.num == 2:
             self.clear(5)
             self.num = 3
+
+        if num == 1:
+            self.destroy()
 
     def right_answer(self):
         self.configure(bg=self.SETUP["green"])
@@ -172,8 +170,10 @@ class Quiz(Tk):
 
         if self.count == 0:
             self.num += 1
-            self.a2 = 9
-
+            if self.a2 != 9:
+                self.a2 = 9
+            else:
+                self.a2 -= 1
             self.ref(3)
         else:
             if self.count < 10:
@@ -202,4 +202,3 @@ class Quiz(Tk):
         self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"],
                    bg_color=self.SETUP["pewter_blue"], y=200, x=150)
         self.ref(1)
-
