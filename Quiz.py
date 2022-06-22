@@ -102,49 +102,49 @@ class Quiz(Tk):
         x = 260
         q_list = []
         # set validation that if all the questions have been answerd that it goed to the end
-
-        self.tekst = self.data["question"][self.a2]
-        self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
-                   y=50, x=10)
-        for _ in options:
-            btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
-                              fg=self.SETUP["isabelline"], width=13, height=2, variable=self.opt_sel,
-                              value=len(q_list) + 1, indicatoron=False, command=self.check_answer,
-                              font=(self.SETUP["style"], 20, 'bold'))  # adjust this number
-            btn.deselect()
-            btn.place(y=y, x=x)
-            self.a += 1
-            q_list.append(btn)
-            x -= 260
-            if x == -260:
-                x = 260
-                y -= 100
-        return q_list
-        # check if the answer clicked is equal to the thing that is in the csv file
-        # activate the timer
-        # have a var that
-
-        # do a self.clear(3) to trigger the right_answer function
+        if self.a2 < 10:
+            self.tekst = f"vraag {self.a2 + 1}/ 10"
+            self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
+                       y=0, x=100)
+            self.tekst = self.data["question"][self.a2]
+            self.lable(tekst=self.tekst, fg_color=self.SETUP["isabelline"], bg_color=self.SETUP["pewter_blue"],
+                       y=50, x=10)
+            for _ in options:
+                btn = Radiobutton(self, text=self.answer[self.a][self.a2], bg=self.SETUP["blue_sapphire"],
+                                  fg=self.SETUP["isabelline"], width=13, height=2, variable=self.opt_sel,
+                                  value=len(q_list) + 1, indicatoron=False, command=self.check_answer,
+                                  font=(self.SETUP["style"], 20, 'bold'))  # adjust this number
+                btn.deselect()
+                btn.place(y=y, x=x)
+                self.a += 1
+                q_list.append(btn)
+                x -= 260
+                if x == -260:
+                    x = 260
+                    y -= 100
+            return q_list
+        else:
+            self.clear(5)
+            return
 
     def ref(self, num):
         if num != 3:
             self.update()
-            time.sleep(3)
+            time.sleep(2)
 
-        if self.a2 == 9:
-            self.num += 1
-            self.count = 0
-        else:
-            self.run_timer = False
-            self.a2 += 1
-            self.clear(1)
+        if num == 1:
+            self.destroy()
+        # if self.a2 == 9:
+        #     self.num += 1
+        #     self.count = 0
+        # else:
+        self.run_timer = False
+        self.a2 += 1
+        self.clear(1)
 
         if self.num == 2:
             self.clear(5)
             self.num = 3
-
-        if num == 1:
-            self.destroy()
 
     def right_answer(self):
         self.configure(bg=self.SETUP["green"])
@@ -173,6 +173,7 @@ class Quiz(Tk):
         if self.count == 0:
             self.num += 1
             self.a2 = 9
+
             self.ref(3)
         else:
             if self.count < 10:
